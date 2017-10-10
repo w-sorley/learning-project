@@ -10,8 +10,6 @@ import org.apache.shiro.realm.Realm;
  */
 public class CustomRealm implements Realm {
 
-
-
     public String getName() {
         return "My Custom Realm 1";
     }
@@ -24,7 +22,7 @@ public class CustomRealm implements Realm {
         String passWord = new String((char[])authenticationToken.getCredentials());
         if(!"wang".equals(userName)){
             throw new UnknownAccountException("用户名错误");
-        }else if(!"12358".equals(passWord)){
+        }else if(!"123".equals(passWord)){
             throw new IncorrectCredentialsException("密码错误");
         }
         return new SimpleAuthenticationInfo(userName,passWord,this.getName());
