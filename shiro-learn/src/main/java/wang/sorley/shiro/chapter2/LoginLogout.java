@@ -32,28 +32,34 @@ public class LoginLogout {
 
 
     public static void testLoginAndLogout(String configFilePath) {
+        UsernamePasswordToken token = new UsernamePasswordToken("wang", "123");
+        testLogin(token,configFilePath);
+        Subject subject = SecurityUtils.getSubject();
+
+        PrincipalCollection principalCollection = subject.getPrincipals();
+        System.out.println(principalCollection.asList().size());
+
+        subject.logout();
+        if (!subject.isAuthenticated()) {
+            System.out.println("退出登录");
+        }
+
+    }
+
+    public static void testLogin(UsernamePasswordToken token,String configFilePath){
         Factory<SecurityManager> securityManagerFactory = new IniSecurityManagerFactory(configFilePath);
         SecurityManager securityManager = securityManagerFactory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken("wang", "123");
         try {
             subject.login(token);
         } catch (AuthenticationException e) {
             e.printStackTrace();
             System.out.println("身份验证失败！！");
         }
-
         if (subject.isAuthenticated()) {
             System.out.println("身份验证成功");
         }
-        PrincipalCollection principalCollection = subject.getPrincipals();
-        System.out.println(principalCollection.asList().size());
-        subject.logout();
-        if (!subject.isAuthenticated()) {
-            System.out.println("退出登录");
-        }
-
     }
 
 
